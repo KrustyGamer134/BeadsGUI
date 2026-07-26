@@ -4,7 +4,7 @@ A small, local browser interface for [Beads](https://github.com/steveyegge/beads
 
 ## What it does
 
-- Shows ticket title, status, created date, and last-updated date.
+- Shows ticket number, title, status, created date, and last-updated date.
 - Filters by project, status, ticket type, and keywords.
 - Sorts by title, status, created date, or updated date.
 - Opens a complete ticket view, with an editor for supported Beads fields.

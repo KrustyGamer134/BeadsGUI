@@ -40,6 +40,7 @@ function sortedIssues() {
   const { key, direction } = state.sort;
   const multiplier = direction === 'asc' ? 1 : -1;
   const values = {
+    id: (issue) => field(issue, 'id') || '',
     title: (issue) => field(issue, 'title') || '',
     status: (issue) => field(issue, 'status') || 'open',
     created: (issue) => new Date(field(issue, 'created_at', 'created') || 0).getTime() || 0,
@@ -72,6 +73,7 @@ function renderList() {
     const row = template.content.firstElementChild.cloneNode(true);
     const id = field(issue, 'id'); const status = field(issue, 'status') || 'open';
     row.dataset.id = id; row.classList.toggle('selected', id === state.selectedId);
+    row.querySelector('.ticket-id').textContent = text(id);
     row.querySelector('.ticket-title').textContent = text(field(issue, 'title'));
     const pill = row.querySelector('.status-pill'); pill.textContent = statusLabel(status); pill.classList.add(status);
     row.querySelector('.created').textContent = date(field(issue, 'created_at', 'created'));

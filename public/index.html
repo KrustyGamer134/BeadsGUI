@@ -35,7 +35,7 @@
       <section id="notice" class="notice" hidden></section>
       <div class="workspace">
         <section class="ticket-panel" aria-label="Tickets">
-          <div class="table-head"><button class="sort-button" data-sort="title" aria-sort="none">Title <span aria-hidden="true"></span></button><button class="sort-button" data-sort="status" aria-sort="none">Status <span aria-hidden="true"></span></button><button class="sort-button" data-sort="created" aria-sort="none">Created <span aria-hidden="true"></span></button><button class="sort-button" data-sort="updated" aria-sort="descending">Updated <span aria-hidden="true">↓</span></button></div>
+          <div class="table-head"><button class="sort-button" data-sort="id" aria-sort="none">Ticket # <span aria-hidden="true"></span></button><button class="sort-button" data-sort="title" aria-sort="none">Title <span aria-hidden="true"></span></button><button class="sort-button" data-sort="status" aria-sort="none">Status <span aria-hidden="true"></span></button><button class="sort-button" data-sort="created" aria-sort="none">Created <span aria-hidden="true"></span></button><button class="sort-button" data-sort="updated" aria-sort="descending">Updated <span aria-hidden="true">↓</span></button></div>
           <div id="ticket-list" class="ticket-list" aria-live="polite"></div>
         </section>
         <aside id="detail-panel" class="detail-panel" aria-label="Ticket details">
@@ -43,7 +43,7 @@
         </aside>
       </div>
     </main>
-    <template id="ticket-row-template"><button class="ticket-row"><span class="ticket-title"></span><span class="status-pill"></span><time class="created"></time><time class="updated"></time></button></template>
+    <template id="ticket-row-template"><button class="ticket-row"><span class="ticket-id"></span><span class="ticket-title"></span><span class="status-pill"></span><time class="created"></time><time class="updated"></time></button></template>
     <script src="/app.js"></script>
   </body>
 </html>
