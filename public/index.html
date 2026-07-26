@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beads — Tickets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark">b</span><div><h1>Beads</h1><p>Ticket workspace</p></div></div>
+        <div class="topbar-actions">
+          <div class="settings-wrap">
+            <button class="icon-button" id="settings-button" title="Settings" aria-label="Open settings" aria-expanded="false">⚙</button>
+            <section class="settings-popover" id="settings-popover" hidden aria-label="Settings">
+              <h2>Settings</h2>
+              <label class="toggle-row" for="hide-closed-toggle"><span><strong>Hide closed tickets</strong><small>Keep completed work out of the normal list.</small></span><input id="hide-closed-toggle" type="checkbox" role="switch" /></label>
+              <p class="settings-note">Choose <strong>Closed</strong> in the status filter to view them anytime.</p>
+            </section>
+          </div>
+          <button class="icon-button" id="refresh-button" title="Refresh tickets" aria-label="Refresh tickets">↻</button>
+        </div>
+      </header>
+      <section class="toolbar" aria-label="Ticket filters">
+        <label class="select-label project-filter">Project<select id="project-filter"></select></label>
+        <label class="search"><span>⌕</span><input id="search-input" type="search" placeholder="Search tickets and keywords…" /></label>
+        <label class="select-label">Status<select id="status-filter"><option value="all">All statuses</option><option value="open">Open</option><option value="in_progress">In progress</option><option value="blocked">Blocked</option><option value="deferred">Deferred</option><option value="closed">Closed</option></select></label>
+        <label class="select-label">Ticket type<select id="type-filter"><option value="all">All tickets</option></select></label>
+        <p id="issue-count" aria-live="polite"></p>
+      </section>
+      <section id="notice" class="notice" hidden></section>
+      <div class="workspace">
+        <section class="ticket-panel" aria-label="Tickets">
+          <div class="table-head"><button class="sort-button" data-sort="title" aria-sort="none">Title <span aria-hidden="true"></span></button><button class="sort-button" data-sort="status" aria-sort="none">Status <span aria-hidden="true"></span></button><button class="sort-button" data-sort="created" aria-sort="none">Created <span aria-hidden="true"></span></button><button class="sort-button" data-sort="updated" aria-sort="descending">Updated <span aria-hidden="true">↓</span></button></div>
+          <div id="ticket-list" class="ticket-list" aria-live="polite"></div>
+        </section>
+        <aside id="detail-panel" class="detail-panel" aria-label="Ticket details">
+          <div class="empty-state"><span class="empty-glyph">◌</span><h2>Select a ticket</h2><p>Its complete details and editor will appear here.</p></div>
+        </aside>
+      </div>
+    </main>
+    <template id="ticket-row-template"><button class="ticket-row"><span class="ticket-title"></span><span class="status-pill"></span><time class="created"></time><time class="updated"></time></button></template>
+    <script src="/app.js"></script>
+  </body>
+</html>
