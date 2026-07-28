@@ -65,7 +65,13 @@ function renderSortButtons() {
 function renderList() {
   const issues = sortedIssues();
   renderSortButtons();
-  $('#issue-count').textContent = `${issues.length} ticket${issues.length === 1 ? '' : 's'}${state.hideClosed && $('#status-filter').value === 'all' ? ' · closed hidden' : ''}`;
+  const total = state.issues.length;
+  const closedHidden = state.hideClosed && $('#status-filter').value === 'all'
+    ? state.issues.filter((issue) => (field(issue, 'status') || 'open') === 'closed').length
+    : 0;
+  const countParts = [`${issues.length} of ${total} ticket${total === 1 ? '' : 's'}`];
+  if (closedHidden) countParts.push(`${closedHidden} closed hidden`);
+  $('#issue-count').textContent = countParts.join(' · ');
   list.replaceChildren();
   if (!issues.length) { list.innerHTML = '<p class="no-results">No tickets match these filters.</p>'; return; }
   const template = $('#ticket-row-template');
