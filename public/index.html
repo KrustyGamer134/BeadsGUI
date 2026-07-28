@@ -27,7 +27,16 @@
       </header>
       <section class="toolbar" aria-label="Ticket filters">
         <label class="select-label project-filter">Project<select id="project-filter"></select></label>
-        <label class="search"><span>⌕</span><input id="search-input" type="search" placeholder="Search tickets and keywords…" /></label>
+        <label class="select-label">Ticket #<input id="ticket-number-filter" class="filter-input" type="search" placeholder="e.g. gw-90x5" /></label>
+        <label class="search"><span>⌕</span><input id="search-input" type="search" placeholder="Search keywords…" /></label>
+        <div class="date-filter-wrap">
+          <button class="date-filter-button" id="date-filter-button" type="button" aria-expanded="false"><span>Dates</span><strong id="date-filter-summary">Any date</strong></button>
+          <section class="date-filter-popover" id="date-filter-popover" hidden aria-label="Date range filters">
+            <div class="popover-heading"><h2>Date ranges</h2><button class="clear-dates" id="clear-date-filters" type="button">Clear</button></div>
+            <div class="date-range"><h3>Created</h3><label>From<input id="created-from-filter" type="date" /></label><label>To<input id="created-to-filter" type="date" /></label></div>
+            <div class="date-range"><h3>Updated</h3><label>From<input id="updated-from-filter" type="date" /></label><label>To<input id="updated-to-filter" type="date" /></label></div>
+          </section>
+        </div>
         <label class="select-label">Status<select id="status-filter"><option value="all">All statuses</option><option value="open">Open</option><option value="in_progress">In progress</option><option value="blocked">Blocked</option><option value="deferred">Deferred</option><option value="closed">Closed</option></select></label>
         <label class="select-label">Ticket type<select id="type-filter"><option value="all">All tickets</option></select></label>
         <p id="issue-count" aria-live="polite"></p>

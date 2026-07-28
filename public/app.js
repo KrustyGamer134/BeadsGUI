@@ -23,16 +23,37 @@ function projectUrl(path) {
   return `${path}${separator}project=${encodeURIComponent(state.projectId)}`;
 }
 
+function localDate(value) {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed)) return '';
+  const parts = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(parsed);
+  return `${parts.find((part) => part.type === 'year').value}-${parts.find((part) => part.type === 'month').value}-${parts.find((part) => part.type === 'day').value}`;
+}
+
+function isWithinDateRange(value, from, to) {
+  if (!from && !to) return true;
+  const issueDate = localDate(value);
+  return Boolean(issueDate) && (!from || issueDate >= from) && (!to || issueDate <= to);
+}
+
 function filteredIssues() {
-  const query = $('#search-input').value.trim().toLowerCase();
+  const keywordQuery = $('#search-input').value.trim().toLowerCase();
+  const ticketQuery = $('#ticket-number-filter').value.trim().toLowerCase().replace(/^#/, '');
+  const createdFrom = $('#created-from-filter').value;
+  const createdTo = $('#created-to-filter').value;
+  const updatedFrom = $('#updated-from-filter').value;
+  const updatedTo = $('#updated-to-filter').value;
   const wantedStatus = $('#status-filter').value;
   const wantedType = $('#type-filter').value;
   return state.issues.filter((issue) => {
     const status = field(issue, 'status') || 'open';
     const type = field(issue, 'issue_type', 'type') || 'task';
-    const searchable = [field(issue, 'id'), field(issue, 'title'), field(issue, 'description'), field(issue, 'notes'), ...(field(issue, 'labels') || [])].join(' ').toLowerCase();
+    const keywordSearchable = [field(issue, 'title'), field(issue, 'description'), field(issue, 'notes'), ...(field(issue, 'labels') || [])].join(' ').toLowerCase();
+    const ticketMatches = !ticketQuery || String(field(issue, 'id') || '').toLowerCase().includes(ticketQuery);
+    const createdMatches = isWithinDateRange(field(issue, 'created_at', 'created'), createdFrom, createdTo);
+    const updatedMatches = isWithinDateRange(field(issue, 'updated_at', 'updated'), updatedFrom, updatedTo);
     const closedIsHidden = state.hideClosed && wantedStatus === 'all' && status === 'closed';
-    return !closedIsHidden && (wantedStatus === 'all' || status === wantedStatus) && (wantedType === 'all' || type === wantedType) && (!query || searchable.includes(query));
+    return !closedIsHidden && ticketMatches && createdMatches && updatedMatches && (wantedStatus === 'all' || status === wantedStatus) && (wantedType === 'all' || type === wantedType) && (!keywordQuery || keywordSearchable.includes(keywordQuery));
   });
 }
 
@@ -142,7 +163,17 @@ async function loadProjects() {
   } catch (error) { showError(error.message); }
 }
 
-$('#search-input').addEventListener('input', renderList); $('#status-filter').addEventListener('change', renderList); $('#type-filter').addEventListener('change', renderList); $('#refresh-button').addEventListener('click', loadIssues);
+function updateDateFilterSummary() {
+  const ranges = [['#created-from-filter', '#created-to-filter'], ['#updated-from-filter', '#updated-to-filter']].filter(([from, to]) => $(from).value || $(to).value).length;
+  $('#date-filter-summary').textContent = ranges ? `${ranges} range${ranges === 1 ? '' : 's'}` : 'Any date';
+}
+
+$('#search-input').addEventListener('input', renderList); $('#ticket-number-filter').addEventListener('input', renderList); $('#status-filter').addEventListener('change', renderList); $('#type-filter').addEventListener('change', renderList); $('#refresh-button').addEventListener('click', loadIssues);
+const dateFilterButton = $('#date-filter-button'); const dateFilterPopover = $('#date-filter-popover');
+dateFilterButton.addEventListener('click', (event) => { event.stopPropagation(); const opening = dateFilterPopover.hidden; dateFilterPopover.hidden = !opening; dateFilterButton.setAttribute('aria-expanded', String(opening)); });
+['#created-from-filter', '#created-to-filter', '#updated-from-filter', '#updated-to-filter'].forEach((selector) => $(selector).addEventListener('change', () => { updateDateFilterSummary(); renderList(); }));
+$('#clear-date-filters').addEventListener('click', () => { ['#created-from-filter', '#created-to-filter', '#updated-from-filter', '#updated-to-filter'].forEach((selector) => { $(selector).value = ''; }); updateDateFilterSummary(); renderList(); });
+document.addEventListener('click', (event) => { if (!event.target.closest('.date-filter-wrap') && !dateFilterPopover.hidden) { dateFilterPopover.hidden = true; dateFilterButton.setAttribute('aria-expanded', 'false'); } });
 document.querySelectorAll('.sort-button').forEach((button) => button.addEventListener('click', () => {
   const key = button.dataset.sort;
   state.sort = state.sort.key === key ? { key, direction: state.sort.direction === 'asc' ? 'desc' : 'asc' } : { key, direction: ['created', 'updated'].includes(key) ? 'desc' : 'asc' };

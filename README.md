@@ -5,7 +5,7 @@ A small, local browser interface for [Beads](https://github.com/steveyegge/beads
 ## What it does
 
 - Shows ticket number, title, status, created date, and last-updated date.
-- Filters by project, status, ticket type, and keywords.
+- Filters by project, status, ticket type, ticket number, keywords, and created/updated date.
 - Sorts by title, status, created date, or updated date.
 - Opens a complete ticket view, with an editor for supported Beads fields.
 - Lets you hide closed tickets from the normal list; that choice is remembered in the browser.
@@ -49,7 +49,7 @@ npm start -- --port 3435 --repo C:\path\to\your\beads-project
 ## Using the interface
 
 - Select a project from the **Project** dropdown.
-- Use the search box and status/type dropdowns to narrow the ticket list.
+- Use the dedicated Ticket # and keyword filters together with the status/type dropdowns to narrow the ticket list. Open **Dates** to set inclusive Created and Updated date ranges; date filters match the displayed calendar day.
 - Click a column heading to sort; click it again to reverse the order.
 - Click a ticket to open its complete details in the right pane.
 - Choose **Edit ticket** to change ticket fields and save through `bd update`.
