@@ -12,8 +12,9 @@
   <body>
     <main class="app-shell">
       <header class="topbar">
-        <div class="brand"><span class="brand-mark">b</span><div><h1>Beads</h1><p>Ticket workspace</p></div></div>
+        <div class="topbar-left"><div class="brand"><span class="brand-mark">b</span><div><h1>Beads</h1><p>Ticket workspace</p></div></div><label class="search header-search"><span>⌕</span><input id="search-input" type="search" placeholder="Search keywords…" /></label></div>
         <div class="topbar-actions">
+          <label class="select-label header-project">Project<select id="project-filter"></select></label>
           <div class="settings-wrap">
             <button class="icon-button" id="settings-button" title="Settings" aria-label="Open settings" aria-expanded="false">⚙</button>
             <section class="settings-popover" id="settings-popover" hidden aria-label="Settings">
@@ -26,9 +27,7 @@
         </div>
       </header>
       <section class="toolbar" aria-label="Ticket filters">
-        <label class="select-label project-filter">Project<select id="project-filter"></select></label>
         <label class="select-label">Ticket #<input id="ticket-number-filter" class="filter-input" type="search" placeholder="e.g. gw-90x5" /></label>
-        <label class="search"><span>⌕</span><input id="search-input" type="search" placeholder="Search keywords…" /></label>
         <div class="date-filter-wrap">
           <button class="date-filter-button" id="date-filter-button" type="button" aria-expanded="false"><span>Dates</span><strong id="date-filter-summary">Any date</strong></button>
           <section class="date-filter-popover" id="date-filter-popover" hidden aria-label="Date range filters">
